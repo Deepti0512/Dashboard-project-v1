@@ -13,9 +13,10 @@ import Swal from "sweetalert2";
 import { useAppStore } from "../../appStore";
 
 const AddForm = ({ closeEvent }) => {
+  
   const getUsers = async () => {
     const data = await getDocs(empCollectionRef);
-    console.log(data);
+    console.log(data.docs);
     setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
@@ -28,10 +29,10 @@ const AddForm = ({ closeEvent }) => {
     pid: "",
   });
   const empCollectionRef = collection(db, "projects");
-  const setRows = useAppStore((state) => state.setRows);
+  const setRows = useAppStore((state) => state.setRows); 
 
   const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
+    const { name, value} = event.target;
     setProjectData((prevProjectData) => {
       return {
         ...prevProjectData,
@@ -39,13 +40,13 @@ const AddForm = ({ closeEvent }) => {
       };
     });
   };
-  const createUser = async() => {
-        console.log(projectData);
-        await addDoc(empCollectionRef, projectData);
-        getUsers();
-        closeEvent();
-        Swal.fire("Added!", "Your Project has been added.", "success")
-  }
+  const createUser = async () => {
+    console.log(projectData);
+    await addDoc(empCollectionRef, projectData);
+    getUsers();
+    closeEvent();
+    Swal.fire("Added!", "Your Project has been added.", "success");
+  };
   const statusOptions = [
     {
       value: "completed",
@@ -59,6 +60,7 @@ const AddForm = ({ closeEvent }) => {
       value: "overdue",
       label: "overdue",
     },
+    
   ];
   return (
     <>

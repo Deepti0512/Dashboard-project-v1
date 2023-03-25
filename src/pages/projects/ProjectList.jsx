@@ -17,12 +17,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import { db } from "../../firebase";
-import {
-  collection,
-  getDocs,
-  deleteDoc,
-  doc,
-} from "firebase/firestore";
+import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
@@ -44,33 +39,33 @@ const style = {
 };
 
 function statusStyle(status) {
-    let resultStyle;
-    if(status === "in progress"){
-        resultStyle={
-            backgroundColor: "yellow",
-            color: "black"
-        }
-    }else if(status === "completed"){
-        resultStyle={
-            backgroundColor: "green",
-            color: "black",
-        }
-    }else{
-        resultStyle ={
-            backgroundColor: "red",
-            color: "white",
-        }
-    }
-    return resultStyle;
+  let resultStyle;
+  if (status === "in progress") {
+    resultStyle = {
+      backgroundColor: "yellow",
+      color: "black",
+    };
+  } else if (status === "completed") {
+    resultStyle = {
+      backgroundColor: "green",
+      color: "black",
+    };
+  } else {
+    resultStyle = {
+      backgroundColor: "red",
+      color: "white",
+    };
+  }
+  return resultStyle;
 }
 
 export default function ProjectList() {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const empCollectionRef = collection(db, "projects");
   const [open, setOpen] = useState(false);
   const [editopen, setEditOpen] = useState(false);
-  const [formid,setFormid] = useState("");
+  const [formid, setFormid] = useState("");
   const handleEditOpen = () => setEditOpen(true);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -78,17 +73,17 @@ export default function ProjectList() {
 
   const setRows = useAppStore((state) => state.setRows);
   const rows = useAppStore((state) => state.rows);
-  
 
   useEffect(() => {
     getUsers();
-  },);
+  }, []);
 
   const getUsers = async () => {
     const data = await getDocs(empCollectionRef);
     console.log(data);
     setRows(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -99,6 +94,7 @@ export default function ProjectList() {
   };
 
   const deleteUser = (id) => {
+    console.log(id);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -115,6 +111,7 @@ export default function ProjectList() {
   };
 
   const deleteApi = async (id) => {
+    console.log(id);
     const userDoc = doc(db, "projects", id);
     await deleteDoc(userDoc);
     Swal.fire("Deleted!", "Your file has been deleted.", "success");
@@ -130,18 +127,20 @@ export default function ProjectList() {
     }
   };
 
-  const editData = (name,startDate,endDate,status,id,description) => {
+  const editData = (name, startDate, endDate, status, id, description,pid) => {
     const data = {
-      id:id,
+      id: id,
       name: name,
       startDate: startDate,
       endDate: endDate,
       status: status,
       description: description,
+      pid:pid
     };
+    console.log(data);
     setFormid(data);
     handleEditOpen();
-  }
+  };
   return (
     <>
       <div>
@@ -152,7 +151,7 @@ export default function ProjectList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <AddForm closeEvent = {handleClose}/>
+            <AddForm closeEvent={handleClose} />
           </Box>
         </Modal>
         <Modal
@@ -162,7 +161,7 @@ export default function ProjectList() {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <EditForm closeEvent = {handleEditClose} fid={formid}/>
+            <EditForm closeEvent={handleEditClose} fid={formid} />
           </Box>
         </Modal>
       </div>
@@ -240,10 +239,10 @@ export default function ProjectList() {
                         <TableCell key={row.id} align="left">
                           {row.endDate}
                         </TableCell>
-                        <TableCell 
-                        key={row.id} 
-                        align="left"
-                        sx={statusStyle(row.status)}
+                        <TableCell
+                          key={row.id}
+                          align="left"
+                          sx={statusStyle(row.status)}
                         >
                           {row.status}
                         </TableCell>
@@ -256,8 +255,16 @@ export default function ProjectList() {
                                 cursor: "pointer",
                               }}
                               className="cursor-pointer"
-                              onClick = {()=>{
-                                editData(row.name,row.startDate,row.endDate,row.status,row.id,row.description)
+                              onClick={() => {
+                                editData(
+                                  row.name,
+                                  row.startDate,
+                                  row.endDate,
+                                  row.status,
+                                  row.id,
+                                  row.description,
+                                  row.pid
+                                );
                               }}
                             />
                             <DeleteIcon

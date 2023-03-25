@@ -31,7 +31,8 @@ const EditForm = ({ closeEvent, fid }) => {
   });
 
   useEffect(() => {
-    console.log("formId: " + fid);
+    console.log("formId: " + fid.id);
+    console.log("form pid: " + fid.pid);
     setProjectData((prevData) => {
       return {
         ...prevData,
