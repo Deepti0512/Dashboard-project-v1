@@ -2,6 +2,7 @@ import * as React from "react";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase";
 // import { AuthContext } from '../context/AuthContext'
+import { useNavigate, Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
 import MuiAppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -15,7 +16,6 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-// import MailIcon from '@mui/icons-material/Mail';
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -93,7 +93,14 @@ export default function TopNav() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+  const navigate = useNavigate();
+  function handleLogout(){
+    signOut(auth).then(() => {
+      navigate("/")
+    }).catch((error) => {
+      console.log(error)
+    });
+  }
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -112,7 +119,7 @@ export default function TopNav() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -133,14 +140,14 @@ export default function TopNav() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={handleLogout}>
         <IconButton
           size="large"
           aria-label="show 4 new mails"
           color="inherit"
-          onClick={() => signOut(auth)}
+          onClick={handleLogout}
         >
-          <ExitToAppIcon />
+          <ExitToAppIcon  onClick={handleLogout}/>
         </IconButton>
         <p>Logout</p>
       </MenuItem>
@@ -173,6 +180,9 @@ export default function TopNav() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
+      {/* to change the color of navbar from blue to black&white add the folllowing style to appbar
+        elevation = {0} sx={{backgroundColor:"#ffffff",color:"#2f2f2f"}} 
+      */}
       <AppBar position="fixed">
         <Toolbar>
           <IconButton

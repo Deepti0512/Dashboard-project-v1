@@ -1,13 +1,34 @@
-.paddingall{
+.paddingall {
   padding: 10px;
 }
-.countTitle{
+
+.countTitle {
   font-weight: 600;
+  color: #fff;
 }
-.countSubtitle{
+
+.countSubtitle {
   font-size: 14px;
+  color: #fff;
 }
-.iconStyle{
+
+.iconStyle {
   margin-top: 20px;
   margin-left: 20px;
+}
+
+.gradient {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+}
+
+.gradientlight {
+  background: rgb(53, 138, 148);
+  background: linear-gradient(158deg, rgba(53, 138, 148, 1) 0%, rgba(91, 180, 96, 1) 100%);
+}
+
+.bgcolor{
+  min-height: 100vh;
+  background:#ECEFF1;
+  background:linear-gradient(158deg,rgb(224,224,224) 0%,rrgb(233,237,254)100%);
 }

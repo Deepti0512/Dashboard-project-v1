@@ -127,6 +127,7 @@ const AddForm = ({ closeEvent }) => {
             defaultValue="completed"
             size="small"
             name="status"
+            value={projectData.status}
             onChange={handleChange}
           >
             {statusOptions.map((option) => (
