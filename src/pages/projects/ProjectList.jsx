@@ -94,7 +94,7 @@ export default function ProjectList() {
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+    setRowsPerPage(event.target.value);
     setPage(0);
   };
 
@@ -125,7 +125,7 @@ export default function ProjectList() {
     if (v) {
       setRows([v]);
     } else {
-    //   setRows([]);
+      setRows([]);
       getUsers();
     }
   };
