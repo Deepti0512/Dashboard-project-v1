@@ -119,7 +119,7 @@ export default function TopNav() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleLogout}>Logout</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Add account</MenuItem>
     </Menu>
   );
 
@@ -218,7 +218,7 @@ export default function TopNav() {
               size="large"
               aria-label="show 4 new mails"
               color="inherit"
-            //   onClick={() => signOut(auth)}
+              onClick = {handleLogout}
             >
               <ExitToAppIcon />
             </IconButton>

@@ -44,16 +44,19 @@ function statusStyle(status) {
     resultStyle = {
       backgroundColor: "yellow",
       color: "black",
+      textTransform:"capitalize",
     };
   } else if (status === "completed") {
     resultStyle = {
       backgroundColor: "green",
       color: "black",
+      textTransform:"capitalize",
     };
   } else {
     resultStyle = {
       backgroundColor: "red",
       color: "white",
+      textTransform:"capitalize",
     };
   }
   return resultStyle;
@@ -61,7 +64,7 @@ function statusStyle(status) {
 
 export default function ProjectList() {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const empCollectionRef = collection(db, "projects");
   const [open, setOpen] = useState(false);
   const [editopen, setEditOpen] = useState(false);
@@ -86,10 +89,12 @@ export default function ProjectList() {
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+    setRows([]);
+    getUsers();
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(event.target.value);
+    setRowsPerPage(+event.target.value);
     setPage(0);
   };
 
@@ -118,7 +123,9 @@ export default function ProjectList() {
     getUsers();
   };
 
+  //Todo: filter according to status value
   const filterData = (v) => {
+    v && console.log(v.status);
     if (v) {
       setRows([v]);
     } else {
@@ -126,6 +133,23 @@ export default function ProjectList() {
       getUsers();
     }
   };
+  // const filterData = (v) => {
+  //   v && console.log(v.status);
+  //   if(v){
+  //     const currStatus = v.status;
+  //     setRows((prevRow)=>{
+  //       prevRow.map((row)=>{
+  //         if(row.status === currStatus){
+  //           return row;
+  //         }
+  //       })
+  //     })
+  //   }
+  // else{
+  //   setRows([]);
+  //   getUsers();
+  // }
+  // };
 
   const editData = (name, startDate, endDate, status, id, description,pid) => {
     const data = {
@@ -166,7 +190,7 @@ export default function ProjectList() {
         </Modal>
       </div>
       {rows.length > 0 && (
-        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <Paper sx={{ width: "100%", overflow: "hidden" ,padding:"5px"}}>
           <Typography
             gutterBottom
             variant="h5"
@@ -186,18 +210,19 @@ export default function ProjectList() {
               onChange={(e, v) => filterData(v)}
               getOptionLabel={(rows) => rows.status || ""}
               renderInput={(params) => (
-                <TextField {...params} size="small" label="Search Products" />
+                <TextField {...params} size="small" label="Search Projects" />
               )}
             />
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, margin:"2px" }}
+
             ></Typography>
             <Button
               variant="contained"
               endIcon={<AddCircleIcon />}
-              onClick={handleOpen}
+              onClick={handleOpen}             
             >
               Add
             </Button>
@@ -286,7 +311,7 @@ export default function ProjectList() {
             </Table>
           </TableContainer>
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25, 100]}
+            rowsPerPageOptions={[5,10, 25, 100]}
             component="div"
             count={rows.length}
             rowsPerPage={rowsPerPage}

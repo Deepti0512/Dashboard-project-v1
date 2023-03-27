@@ -28,6 +28,7 @@ const AddForm = ({ closeEvent }) => {
     description: "",
     pid: "",
   });
+
   const empCollectionRef = collection(db, "projects");
   const setRows = useAppStore((state) => state.setRows); 
 
@@ -40,9 +41,11 @@ const AddForm = ({ closeEvent }) => {
       };
     });
   };
+
   const createUser = async () => {
     console.log(projectData);
     await addDoc(empCollectionRef, projectData);
+    setRows([]);
     getUsers();
     closeEvent();
     Swal.fire("Added!", "Your Project has been added.", "success");
@@ -109,6 +112,8 @@ const AddForm = ({ closeEvent }) => {
             value={projectData.startDate}
             onChange={handleChange}
           />
+          {/* Todo: add date picker */}
+          
         </Grid>
         <Grid item xs={6}>
           <TextField
@@ -124,7 +129,7 @@ const AddForm = ({ closeEvent }) => {
         <Grid item xs={6}>
           <TextField
             id="outlined-select-currency"
-            select
+            select = {true}
             label="Project Status"
             defaultValue="completed"
             size="small"
@@ -164,3 +169,33 @@ const AddForm = ({ closeEvent }) => {
 };
 
 export default AddForm;
+
+/*
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from '@mui/x-date-pickers';
+const [sd,setSd] = useState(new Date());
+const [ed,setEd] = useState(new Date());
+const handleStartDateChange = (date) => {
+  setSd(date);
+};
+<LocalizationProvider dateAdapter={AdapterDayjs}>
+  <DatePicker
+    label="Start date"
+    value={sd}
+    onChange={(newDate) => setSd(newDate)}
+    size="small"
+  />
+</LocalizationProvider> 
+
+const createUser = async () => {
+    console.log(projectData);
+    setSd((prevSd)=>prevSd.toString());
+    setSd((prevEd)=>prevEd.toString());
+    projectData = {...projectData,startDate:sd,endDate:ed};
+    await addDoc(empCollectionRef, projectData);
+    getUsers();
+    closeEvent();
+    Swal.fire("Added!", "Your Project has been added.", "success");
+  };
+*/ 
